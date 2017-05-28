@@ -7,7 +7,6 @@ private:
 
 public:
     length(long long double i, lengthTypes t) {
-        // TODO: Get original length type, and convert to millimeter, and save
         switch (lengthTypes)
         {
             case millimeter:
