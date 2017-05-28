@@ -5,5 +5,6 @@ enum lengthTypes {
     kilometer,
     inch,
     feet,
-    yard
+    yard,
+    mile
 };
