@@ -3,7 +3,6 @@
 #include <cstdio>
 #include <ctime>
 #include <string>
-#include <vector>
 #include <sstream>
 
 #include "zku.h"
