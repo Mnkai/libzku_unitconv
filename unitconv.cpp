@@ -4,8 +4,12 @@
 #include <ctime>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include "zku.h"
+#include "unit.h"
+#include "unitutil.hpp"
+#include "length.hpp"
 
 using namespace std;
 
@@ -15,11 +19,9 @@ struct config {
 };
 
 struct config *confs;
-char *unitConv(const char *req);
+const char *unitConv(const char *req);
 int confcnt = 0;
 int confcap = 0;
-
-const vector<string> length = {};
 
 const char *readmsg(char *key, char *value, const char *msg) {
     if (!*msg)
@@ -146,11 +148,11 @@ void writemsg(char *msg, const char *key, const char *value) {
 
 int load(const char *msg, long size) {
     if (confcap == 0)
-        confs = (config *) calloc(confcap = 1, sizeof(struct config));
+        confs = (config *)calloc(confcap = 1, sizeof(struct config));
     else if (confcnt == confcap) {
         void *temp = realloc(confs, confcap *= 2);
         if (temp) {
-            confs = (config *) temp;
+            confs = (config *)temp;
             memset(confs + confcnt, 0, sizeof(struct config) * confcnt);
         }
     }
@@ -190,9 +192,11 @@ void *execute(const char *msg, long size) {
         return NULL;
 
     // Do work
-    char *funcResult = unitConv(req);
+    const char *funcResult = unitConv(req);
+    if (funcResult == NULL)
+        return NULL;
 
-    char *res = (char*) malloc(256);
+    char *res = (char *)malloc(256);
     *res = '\0';
     writemsg(res, "sender", conf->ident);
     writemsg(res, "type", ZKU_ZSMP);
@@ -203,15 +207,76 @@ void *execute(const char *msg, long size) {
     return res;
 }
 
-char *unitConv(const char *req) {
-    string input = string(req);
+const char *unitConv(const char *req) {
+    const string input = string(req);
+    const string::size_type toLocation = input.find("to", 0);
+    long long double numberInput = 0;
+    long long double numberOutput = 0;
 
-    if ( input.find("to", 0) != string::npos ) // Maybe conversion?
+    if (toLocation != string::npos) // Maybe conversion?
     {
-        // Do work
+        string::size_type sz;
+        try {
+            numberInput = stod(input, &sz);
+        }
+        catch (...) {
+            return NULL;
+        }
+
+        string firstString = input.substr(sz, toLocation);
+        string secondString = input.substr(toLocation, string::npos);
+
+        unitTypes firstUnitType = getUnitType(firstString);
+        unitTypes secondUnitType = getUnitType(secondString);
+
+        if (firstUnitType != secondUnitType)
+            return NULL;
+
+        switch (firstUnitType) {
+            //TODO: Add multiple unit types
+            case length:
+                lengthTypes firstLengthType = getLengthType(firstString);
+                length first(numberInput, firstLengthType);
+                switch (firstLengthType) {
+                    case millimeter:
+                        numberOutput = first.toMillimeter();
+                        break;
+                    case centimeter:
+                        numberOutput = first.toCentimeter();
+                        break;
+                    case meter:
+                        numberOutput = first.toMeter();
+                        break;
+                    case kilometer:
+                        numberOutput = first.toKilometer();
+                        break;
+                    case inch:
+                        numberOutput = first.toInch();
+                        break;
+                    case feet:
+                        numberOutput = first.toFeet();
+                        break;
+                    case yard:
+                        numberOutput = first.toYard();
+                        break;
+                    case mile:
+                        numberOutput = first.toMile();
+                        break;
+                    case notLength:
+                        return NULL;
+                }
+                break;
+            case notUnit:
+                return NULL;
+        }
+
+        // Got numberOutput
+        stringstream tempStream;
+        tempStream << numberOutput;
+
+        return to_string(numberOutput).data();
     }
-    else
-    {
+    else {
         return NULL;
     }
 }

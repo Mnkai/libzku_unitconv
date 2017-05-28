@@ -6,5 +6,12 @@ enum lengthTypes {
     inch,
     feet,
     yard,
-    mile
+    mile,
+    notLength
+};
+
+
+enum unitTypes {
+    length,
+    notUnit
 };

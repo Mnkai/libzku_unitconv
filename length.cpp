@@ -1,11 +1,9 @@
-#include "unit.h"
+#include "length.hpp"
 
 class length {
-private:
     // raw value for length is meter
     const long long double rawValue;
 
-public:
     length(long long double i, lengthTypes t) {
         switch (lengthTypes)
         {
