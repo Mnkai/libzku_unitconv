@@ -1,0 +1,8 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7)
+PROJECT(libzku_unitconv)
+
+SET(CMAKE_CXX_STANDARD 11)
+
+SET(SOURCE_FILES unitconv.cpp zku.h)
+
+ADD_LIBRARY(libzku_unitconv SHARED ${SOURCE_FILES})
