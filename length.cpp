@@ -29,8 +29,6 @@ length::length(long double i, lengthTypes t) {
         case notLength:
             break;
     }
-
-    rawValue = i;
 }
 
 long double length::toMillimeter() {

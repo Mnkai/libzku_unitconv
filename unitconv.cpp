@@ -18,7 +18,6 @@ struct config {
 };
 
 struct config *confs;
-const char *unitConv(const char *req);
 int confcnt = 0;
 int confcap = 0;
 
@@ -169,46 +168,10 @@ int load(const char *msg, long size) {
     return 1;
 }
 
-void *execute(const char *msg, long size) {
-    const char *req = msg;
-    char key[256];
-    char value[2048];
-    char sender[512] = {0};
-    char id[12] = {0};
-    while ((msg = readmsg(key, value, msg))) {
-        if (strcmp(key, "sender") == 0)
-            strcpy(sender, value);
-        else if (strcmp(key, "id") == 0)
-            strcpy(id, value);
-    }
-    struct config *conf = NULL;
-    for (int i = 0; i < confcap; i++)
-        if (strcmp(confs[i].master, sender) == 0) {
-            conf = &confs[i];
-            break;
-        }
-    if (!conf)
-        return NULL;
-
-    // Do work
-    const char *funcResult = unitConv(req);
-    if (funcResult == NULL)
-        return NULL;
-
-    char *res = (char *)malloc(256);
-    *res = '\0';
-    writemsg(res, "sender", conf->ident);
-    writemsg(res, "type", ZKU_ZSMP);
-    writemsg(res, "id", id);
-    sprintf(id, "%ld", (long)time(NULL));
-    writemsg(res, "timestamp", id);
-    writemsg(res, "response", req);
-    return res;
-}
-
-const char *unitConv(const char *req) {
+string unitConv(const char *req) {
     const string input = string(req);
-    const string::size_type toLocation = input.find("to", 0);
+    const string toAlias = string("to");
+    const string::size_type toLocation = input.find(toAlias.data(), 0);
     long double numberInput = 0;
     long double numberOutput = 0;
 
@@ -219,24 +182,25 @@ const char *unitConv(const char *req) {
             numberInput = stod(input, &sz);
         }
         catch (...) {
-            return NULL;
+            return string("");
         }
 
-        string firstString = input.substr(sz, toLocation);
-        string secondString = input.substr(toLocation, string::npos);
+        string secondString = input.substr(toLocation + toAlias.size(), string::npos);
+        string firstString = input.substr(sz, input.size() - secondString.size() - toAlias.size() - 1);
 
         unitTypes firstUnitType = getUnitType(firstString);
         unitTypes secondUnitType = getUnitType(secondString);
 
         if (firstUnitType != secondUnitType)
-            return NULL;
+            return string("");
 
         switch (firstUnitType) {
             //TODO: Add multiple unit types
             case lengthUnit: {
                 lengthTypes firstLengthType = getLengthType(firstString);
+                lengthTypes secondLengthType = getLengthType(secondString);
                 length first = length(numberInput, firstLengthType);
-                switch (firstLengthType) {
+                switch (secondLengthType) {
                     case millimeter:
                         numberOutput = first.toMillimeter();
                         break;
@@ -262,23 +226,60 @@ const char *unitConv(const char *req) {
                         numberOutput = first.toMile();
                         break;
                     case notLength:
-                        return NULL;
+                        return string("");
                 }
             }
                 break;
             case notUnit:
-                return NULL;
+                return string("");
         }
 
         // Got numberOutput
-        stringstream tempStream;
-        tempStream << numberOutput;
+        string toReturn = to_string(numberOutput);
+        toReturn.append(getLengthName(getLengthType(secondString)));
 
-        return to_string(numberOutput).data();
+        return toReturn.data();
     }
     else {
-        return NULL;
+        return string("");
     }
+}
+
+void *execute(const char *msg, long size) {
+    const char *req = msg;
+    char key[256];
+    char value[2048];
+    char sender[512] = {0};
+    char id[12] = {0};
+    while ((msg = readmsg(key, value, msg))) {
+        if (strcmp(key, "sender") == 0)
+            strcpy(sender, value);
+        else if (strcmp(key, "id") == 0)
+            strcpy(id, value);
+    }
+    struct config *conf = NULL;
+    for (int i = 0; i < confcap; i++)
+        if (strcmp(confs[i].master, sender) == 0) {
+            conf = &confs[i];
+            break;
+        }
+    if (!conf)
+        return NULL;
+
+    // Do work
+    string funcResult = unitConv(value);
+    if (funcResult.compare(string("")) == 0)
+        return NULL;
+
+    char *res = (char *)malloc(256);
+    *res = '\0';
+    writemsg(res, "sender", conf->ident);
+    writemsg(res, "type", ZKU_ZSMP);
+    writemsg(res, "id", id);
+    sprintf(id, "%ld", (long)time(NULL));
+    writemsg(res, "timestamp", id);
+    writemsg(res, "response", funcResult.data());
+    return res;
 }
 
 int unload(const char *msg, long size) {
