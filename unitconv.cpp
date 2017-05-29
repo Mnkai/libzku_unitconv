@@ -7,6 +7,7 @@
 
 #include "zku.h"
 #include "unitutil.hpp"
+#include "util.hpp"
 
 using namespace std;
 
@@ -184,7 +185,10 @@ string unitConv(const char *req) {
         }
 
         string secondString = input.substr(toLocation + toAlias.size(), string::npos);
-        string firstString = input.substr(sz, input.size() - secondString.size() - toAlias.size() - 1);
+        string firstString = input.substr(sz, input.size() - secondString.size() - toAlias.size() - 2);
+
+        trim(firstString);
+        trim(secondString);
 
         unitTypes firstUnitType = getUnitType(firstString);
         unitTypes secondUnitType = getUnitType(secondString);

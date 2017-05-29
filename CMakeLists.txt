@@ -9,6 +9,7 @@ SET(SOURCE_FILES
     weight.cpp weight.hpp
     volume.cpp volume.hpp
     unit.h
+    util.cpp
     unitutil.cpp unitutil.hpp)
 
 ADD_LIBRARY(zku_unitconv SHARED ${SOURCE_FILES})

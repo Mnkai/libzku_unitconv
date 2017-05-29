@@ -1,62 +1,62 @@
 #include "unitutil.hpp"
 
 lengthTypes getLengthType(std::string input) {
-    if (input.find("mm") != std::string::npos ||
-        input.find("millimeter") != std::string::npos ||
-        input.find("millimetre") != std::string::npos)
+    if (input.compare("mm") == 0 ||
+        input.compare("millimeter") == 0 ||
+        input.compare("millimetre") == 0)
         return millimeter;
-    else if (input.find("cm") != std::string::npos ||
-             input.find("centimeter") != std::string::npos ||
-             input.find("centimetre") != std::string::npos)
+    else if (input.compare("cm") == 0 ||
+             input.compare("centimeter") == 0 ||
+             input.compare("centimetre") == 0)
         return centimeter;
-    else if (input.find("km") != std::string::npos ||
-             input.find("kilometer") != std::string::npos ||
-             input.find("kilometre") != std::string::npos)
+    else if (input.compare("km") == 0 ||
+             input.compare("kilometer") == 0 ||
+             input.compare("kilometre") == 0)
         return kilometer;
-    else if (input.find("mi") != std::string::npos ||
-             input.find("mile") != std::string::npos)
+    else if (input.compare("mi") == 0 ||
+             input.compare("mile") == 0)
         return mile;
-    else if (input.find("m") != std::string::npos ||
-             input.find("meter") != std::string::npos ||
-             input.find("metre") != std::string::npos)
+    else if (input.compare("m") == 0 ||
+             input.compare("meter") == 0 ||
+             input.compare("metre") == 0)
         return meter;
-    else if (input.find("in") != std::string::npos ||
-             input.find("inch") != std::string::npos)
+    else if (input.compare("in") == 0 ||
+             input.compare("inch") == 0)
         return inch;
-    else if (input.find("ft") != std::string::npos ||
-             input.find("feet") != std::string::npos)
+    else if (input.compare("ft") == 0 ||
+             input.compare("feet") == 0)
         return feet;
-    else if (input.find("yd") != std::string::npos ||
-             input.find("yard") != std::string::npos)
+    else if (input.compare("yd") == 0 ||
+             input.compare("yard") == 0)
         return yard;
     else
         return notLength;
 }
 
 weightTypes getWeightType(std::string input) {
-    if (input.find("mg") != std::string::npos ||
-        input.find("milligram") != std::string::npos)
+    if (input.compare("mg") == 0 ||
+        input.compare("milligram") == 0)
         return milligram;
-    else if (input.find("kg") != std::string::npos ||
-             input.find("kilogram") != std::string::npos)
+    else if (input.compare("kg") == 0 ||
+             input.compare("kilogram") == 0)
         return kilogram;
-    else if (input.find("kt") != std::string::npos ||
-             input.find("kiloton") != std::string::npos)
+    else if (input.compare("kt") == 0 ||
+             input.compare("kiloton") == 0)
         return kiloton;
-    else if (input.find("t") != std::string::npos ||
-             input.find("ton") != std::string::npos)
+    else if (input.compare("t") == 0 ||
+             input.compare("ton") == 0)
         return ton;
-    else if (input.find("gr") != std::string::npos ||
-             input.find("grain") != std::string::npos)
+    else if (input.compare("gr") == 0 ||
+             input.compare("grain") == 0)
         return grain;
-    else if (input.find("g") != std::string::npos ||
-             input.find("gram") != std::string::npos)
+    else if (input.compare("g") == 0 ||
+             input.compare("gram") == 0)
         return gram;
-    else if (input.find("oz") != std::string::npos ||
-             input.find("ounce") != std::string::npos)
+    else if (input.compare("oz") == 0 ||
+             input.compare("ounce") == 0)
         return ounce;
-    else if (input.find("lb") != std::string::npos ||
-             input.find("pound") != std::string::npos)
+    else if (input.compare("lb") == 0 ||
+             input.compare("pound") == 0)
         return pound;
     else
         return notWeight;
@@ -64,28 +64,28 @@ weightTypes getWeightType(std::string input) {
 
 volumeTypes getVolumeType(std::string input) {
 
-    if (input.find("cm^3") != std::string::npos ||
-        input.find("cubic centimeter") != std::string::npos ||
-        input.find("cubic centimetre") != std::string::npos)
+    if (input.compare("cm^3") == 0 ||
+        input.compare("cubic centimeter") == 0 ||
+        input.compare("cubic centimetre") == 0)
         return cubiccentimeter;
-    else if (input.find("m^3") != std::string::npos ||
-             input.find("cubic meter") != std::string::npos ||
-             input.find("cubic metre") != std::string::npos)
+    else if (input.compare("m^3") == 0 ||
+             input.compare("cubic meter") == 0 ||
+             input.compare("cubic metre") == 0)
         return cubicmeter;
-    else if (input.find("gal") != std::string::npos ||
-             input.find("gallon") != std::string::npos)
+    else if (input.compare("gal") == 0 ||
+             input.compare("gallon") == 0)
         return gallon;
-    else if (input.find("pt") != std::string::npos ||
-             input.find("pint") != std::string::npos)
+    else if (input.compare("pt") == 0 ||
+             input.compare("pint") == 0)
         return pint;
-    else if (input.find("gill") != std::string::npos)
+    else if (input.compare("gill") == 0)
         return gill;
-    else if (input.find("qt") != std::string::npos ||
-             input.find("quart") != std::string::npos)
+    else if (input.compare("qt") == 0 ||
+             input.compare("quart") == 0)
         return quart;
-    else if (input.find("l") != std::string::npos ||
-             input.find("liter") != std::string::npos ||
-             input.find("litre") != std::string::npos)
+    else if (input.compare("l") == 0 ||
+             input.compare("liter") == 0 ||
+             input.compare("litre") == 0)
         return liter;
     else
         return notVolume;
