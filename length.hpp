@@ -10,10 +10,10 @@ private:
 public:
     length(long double i, lengthTypes t);
 
-    long double toMillimeter();
-    long double toCentimeter();
+    long double toMilliMeter();
+    long double toCentiMeter();
     long double toMeter();
-    long double toKilometer();
+    long double toKiloMeter();
     long double toInch();
     long double toFeet();
     long double toYard();

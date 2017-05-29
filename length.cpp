@@ -31,11 +31,11 @@ length::length(long double i, lengthTypes t) {
     }
 }
 
-long double length::toMillimeter() {
+long double length::toMilliMeter() {
     return 1000 * rawValue;
 }
 
-long double length::toCentimeter() {
+long double length::toCentiMeter() {
     return 100 * rawValue;
 }
 
@@ -43,7 +43,7 @@ long double length::toMeter() {
     return rawValue;
 }
 
-long double length::toKilometer() {
+long double length::toKiloMeter() {
     return 0.001 * rawValue;
 }
 

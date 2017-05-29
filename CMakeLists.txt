@@ -6,6 +6,8 @@ SET(CMAKE_CXX_STANDARD 11)
 SET(SOURCE_FILES
     unitconv.cpp zku.h
     length.cpp length.hpp
+    weight.cpp weight.hpp
+    volume.cpp volume.hpp
     unit.h
     unitutil.cpp unitutil.hpp)
 

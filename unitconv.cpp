@@ -3,12 +3,10 @@
 #include <cstdio>
 #include <ctime>
 #include <string>
-#include <sstream>
+#include <limits>
 
 #include "zku.h"
-#include "unit.h"
 #include "unitutil.hpp"
-#include "length.hpp"
 
 using namespace std;
 
@@ -196,39 +194,20 @@ string unitConv(const char *req) {
 
         switch (firstUnitType) {
             //TODO: Add multiple unit types
-            case lengthUnit: {
-                lengthTypes firstLengthType = getLengthType(firstString);
-                lengthTypes secondLengthType = getLengthType(secondString);
-                length first = length(numberInput, firstLengthType);
-                switch (secondLengthType) {
-                    case millimeter:
-                        numberOutput = first.toMillimeter();
-                        break;
-                    case centimeter:
-                        numberOutput = first.toCentimeter();
-                        break;
-                    case meter:
-                        numberOutput = first.toMeter();
-                        break;
-                    case kilometer:
-                        numberOutput = first.toKilometer();
-                        break;
-                    case inch:
-                        numberOutput = first.toInch();
-                        break;
-                    case feet:
-                        numberOutput = first.toFeet();
-                        break;
-                    case yard:
-                        numberOutput = first.toYard();
-                        break;
-                    case mile:
-                        numberOutput = first.toMile();
-                        break;
-                    case notLength:
-                        return string("");
-                }
-            }
+            case lengthUnit:
+                numberOutput = processLengthType(firstString, secondString, numberInput);
+                if (numberOutput == std::numeric_limits<long double>::min())
+                    return string("");
+                break;
+            case weightUnit:
+                numberOutput = processWeightType(firstString, secondString, numberInput);
+                if (numberOutput == std::numeric_limits<long double>::min())
+                    return string("");
+                break;
+            case volumeUnit:
+                numberOutput = processVolumeType(firstString, secondString, numberInput);
+                if (numberOutput == std::numeric_limits<long double>::min())
+                    return string("");
                 break;
             case notUnit:
                 return string("");
@@ -236,7 +215,19 @@ string unitConv(const char *req) {
 
         // Got numberOutput
         string toReturn = to_string(numberOutput);
-        toReturn.append(getLengthName(getLengthType(secondString)));
+        switch (firstUnitType) {
+            case lengthUnit:
+                toReturn.append(getLengthName(getLengthType(secondString)));
+                break;
+            case weightUnit:
+                toReturn.append(getWeightName(getWeightType(secondString)));
+                break;
+            case volumeUnit:
+                toReturn.append(getVolumeName(getVolumeType(secondString)));
+                break;
+            case notUnit:
+                return string("");
+        }
 
         return toReturn.data();
     }
