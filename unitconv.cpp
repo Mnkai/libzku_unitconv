@@ -209,8 +209,8 @@ void *execute(const char *msg, long size) {
 const char *unitConv(const char *req) {
     const string input = string(req);
     const string::size_type toLocation = input.find("to", 0);
-    long long double numberInput = 0;
-    long long double numberOutput = 0;
+    long double numberInput = 0;
+    long double numberOutput = 0;
 
     if (toLocation != string::npos) // Maybe conversion?
     {
@@ -233,9 +233,9 @@ const char *unitConv(const char *req) {
 
         switch (firstUnitType) {
             //TODO: Add multiple unit types
-            case length:
+            case lengthUnit: {
                 lengthTypes firstLengthType = getLengthType(firstString);
-                length first(numberInput, firstLengthType);
+                length first = length(numberInput, firstLengthType);
                 switch (firstLengthType) {
                     case millimeter:
                         numberOutput = first.toMillimeter();
@@ -264,6 +264,7 @@ const char *unitConv(const char *req) {
                     case notLength:
                         return NULL;
                 }
+            }
                 break;
             case notUnit:
                 return NULL;

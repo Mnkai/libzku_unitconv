@@ -1,27 +1,25 @@
-#include "unit.h"
 #include "unitutil.hpp"
-#include <string>
 
 lengthTypes getLengthType(std::string input) {
-    if (input.find("mm") != string::npos || input.find("millimeter") != string::npos ||
-        input.find("millimetre") != string::npos)
+    if (input.find("mm") != std::string::npos || input.find("millimeter") != std::string::npos ||
+        input.find("millimetre") != std::string::npos)
         return millimeter;
-    else if (input.find("cm") != string::npos || input.find("centimeter") != string::npos ||
-             input.find("centimetre") != string::npos)
+    else if (input.find("cm") != std::string::npos || input.find("centimeter") != std::string::npos ||
+             input.find("centimetre") != std::string::npos)
         return centimeter;
-    else if (input.find("km") != string::npos || input.find("kilometer") != string::npos ||
-             input.find("kilometre") != string::npos)
+    else if (input.find("km") != std::string::npos || input.find("kilometer") != std::string::npos ||
+             input.find("kilometre") != std::string::npos)
         return kilometer;
-    else if (input.find("m") != string::npos || input.find("meter") != string::npos ||
-             input.find("metre") != string::npos)
+    else if (input.find("m") != std::string::npos || input.find("meter") != std::string::npos ||
+             input.find("metre") != std::string::npos)
         return meter;
-    else if (input.find("in") != string::npos || input.find("inch") != string::npos)
+    else if (input.find("in") != std::string::npos || input.find("inch") != std::string::npos)
         return inch;
-    else if (input.find("ft") != string::npos || input.find("feet") != string::npos)
+    else if (input.find("ft") != std::string::npos || input.find("feet") != std::string::npos)
         return feet;
-    else if (input.find("yd") != string::npos || input.find("yard") != string::npos)
+    else if (input.find("yd") != std::string::npos || input.find("yard") != std::string::npos)
         return yard;
-    else if (input.find("mi") != string::npos || input.find("mile") != string::npos)
+    else if (input.find("mi") != std::string::npos || input.find("mile") != std::string::npos)
         return mile;
     else
         return notLength;
@@ -32,7 +30,7 @@ unitTypes getUnitType(std::string input) {
 
     lengthTypes isLength = getLengthType(input);
     if (isLength != notLength)
-        return length;
+        return lengthUnit;
 
     else
         return notUnit;

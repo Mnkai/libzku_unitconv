@@ -4,17 +4,18 @@
 
 class length {
 private:
-    const long long double rawValue;
+    // raw value for lengthUnit is meter
+    long double rawValue;
 
 public:
-    length(long long double i, lengthTypes t);
+    length(long double i, lengthTypes t);
 
-    long long double toMillimeter();
-    long long double toCentimeter();
-    long long double toMeter();
-    long long double toKilometer();
-    long long double toInch();
-    long long double toFeet();
-    long long double toYard();
-    long long double toMile();
+    long double toMillimeter();
+    long double toCentimeter();
+    long double toMeter();
+    long double toKilometer();
+    long double toInch();
+    long double toFeet();
+    long double toYard();
+    long double toMile();
 };

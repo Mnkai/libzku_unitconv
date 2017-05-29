@@ -1,3 +1,5 @@
+#pragma once
+
 enum lengthTypes {
     millimeter,
     centimeter,
@@ -12,6 +14,6 @@ enum lengthTypes {
 
 
 enum unitTypes {
-    length,
+    lengthUnit,
     notUnit
 };

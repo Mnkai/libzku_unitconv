@@ -9,4 +9,4 @@ SET(SOURCE_FILES
     unit.h
     unitutil.cpp unitutil.hpp)
 
-ADD_LIBRARY(libzku_unitconv SHARED ${SOURCE_FILES})
+ADD_LIBRARY(zku_unitconv SHARED ${SOURCE_FILES})
